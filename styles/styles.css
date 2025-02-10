@@ -1,0 +1,42 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+
+html,body{
+    height: 100%;
+    width: 100%;
+    position: relative;
+}
+.zunanji{
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.mazeDiv{
+    width: 550px;
+    height: 550px;
+    border: 2px solid black;
+}
+.buttons{
+    width: 550px;
+    height: 50px;
+}
+.resetButton{
+    height: 50px;
+    width: 200px;
+    color: rgb(160, 110, 49);
+    font-size: 25px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: blanchedalmond;
+    border-radius: 20px;
+    border: 2px solid gray;
+    cursor: pointer;
+}
+.resetButton:hover{
+ 
+}
