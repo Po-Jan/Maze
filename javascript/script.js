@@ -2,9 +2,9 @@ const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 
 // Maze configuration
-const cols = 22; // Number of columns
-const rows = 22; // Number of rows
-const cellSize = 25;
+const cols = 19; // Number of columns
+const rows = 19; // Number of rows
+const cellSize = 30;
 canvas.width = cols * cellSize;
 canvas.height = rows * cellSize;
 
@@ -125,26 +125,20 @@ function drawMaze() {
     for (let cell of grid) {
         cell.draw();
     }
-     // Highlight the Start Point (Top-Left)
-     ctx.fillStyle = "rgba(0, 231, 12, 0.66)";
-     ctx.fillRect(0, 0, cellSize, cellSize);
- 
-     // Highlight the End Point (Bottom-Right)
-     ctx.fillStyle = "rgb(224, 0, 0)";
-     ctx.fillRect((cols - 1) * cellSize, (rows - 1) * cellSize, cellSize, cellSize);
-}
 
+    // Highlight the Start Point (Top-Left)
+    ctx.fillStyle = "rgba(0, 231, 12, 0.66)";
+    ctx.fillRect(0, 0, cellSize, cellSize);
+
+    // Highlight the End Point (Bottom-Right)
+    ctx.fillStyle = "rgb(224, 0, 0)";
+    ctx.fillRect((cols - 1) * cellSize, (rows - 1) * cellSize, cellSize, cellSize);
+}
 
 // Setup and generate maze instantly
 setup();
 
-// Regenerate maze when "R" is pressed
-document.addEventListener("keydown", (e) => {
-    if (e.key === "r") {
-        setup();
-    }
-});
-
+// Reset button functionality
 document.querySelector(".resetButton").addEventListener("click", () => {
     setup();
 });

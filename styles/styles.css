@@ -16,8 +16,8 @@ html,body{
     justify-content: center;
 }
 .mazeDiv{
-    width: 550px;
-    height: 550px;
+    width: 570px;
+    height: 570px;
     border: 2px solid black;
 }
 .buttons{
