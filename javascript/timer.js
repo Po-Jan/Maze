@@ -48,8 +48,8 @@ function resetTimer() {
 
 // Stop the game when time runs out
 function stopGame() {
+    resetTimer();
     swal("⏳ Time's up!", "Try again!", "error").then(() => {
-        resetTimer(); // Reset the timer after alert
         setup(); // Reset the maze/game
     });
 }
