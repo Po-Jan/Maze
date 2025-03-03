@@ -8,7 +8,7 @@ let player = {
 
 // Load player image
 const playerImg = new Image();
-playerImg.src = "assets/player.png";
+playerImg.src = "assets/standingRight.png";
 playerImg.onload = () => {
     drawMaze(); // Draw player once the image loads
 };
@@ -17,21 +17,64 @@ playerImg.onload = () => {
 let currentKey = null; // Tracks the current active key
 let isMoving = false;
 const moveSpeed = 2; // Pixels per frame
+let movementDisabled = false; // Flag to disable player movement
 
-// Listen for keydown (press)
-document.addEventListener("keydown", (e) => {
-    if (["ArrowRight", "ArrowLeft", "ArrowDown", "ArrowUp"].includes(e.key)) {
-        currentKey = e.key; // Always overwrite with the latest key
-        if (!isMoving) movePlayer(); // Move instantly on press
-    }
-});
+// Disable player movement
+function disablePlayerMovement() {
+    movementDisabled = true;
+}
+
+// Enable player movement
+function enablePlayerMovement() {
+    movementDisabled = false;
+}
+
+function resetGame() {
+    resetTimer(); // Reset the timer
+    resetPlayer(); // Reset player position
+    setup(); // Regenerate the maze
+    disableHelpButton()
+}
+
+
+/// Track last horizontal movement (left or right) for standing pose
+let lastStandingDirection = "standingRight";
 
 // Listen for keyup (release)
 document.addEventListener("keyup", (e) => {
-    if (e.key === currentKey) {
-        currentKey = null; // Only clear if it's the active key
-    }
+   
+        if (["ArrowRight", "ArrowLeft", "ArrowUp", "ArrowDown"].includes(e.key)) {
+            // Track only the last left or right movement
+            if (e.key === "ArrowLeft" || e.key === "ArrowRight") {
+                lastStandingDirection = e.key === "ArrowLeft" ? "standingLeft" : "standingRight";
+            }
+    
+            // Get current cell to check for walls
+            let currentCell = grid[getIndex(player.x, player.y)];
+    
+            // Check if the player is trapped by walls on both sides (left & right or top & bottom)
+            let horizontalBlocked = currentCell.walls.left && currentCell.walls.right;
+            let verticalBlocked = currentCell.walls.top && currentCell.walls.bottom;
+    
+            // If no movement OR player is trapped, reset to last standing pose
+            if (!isMoving || currentKey === null || horizontalBlocked || verticalBlocked) {
+                lastDirection = lastStandingDirection;
+                ctx.clearRect(0, 0, canvas.width, canvas.height); // Remove any extra ghost images
+                drawMaze(); // Redraw maze to clear any duplicated images
+                drawPlayer(); // Ensure only the correct standing image is displayed
+            }
+    
+            // Clear active key only if the key released is the currently active one
+            if (e.key === currentKey) {
+                lastDirection = lastStandingDirection;
+                currentKey = null;
+            }
+        }
 });
+
+
+
+
 
 // Reset player position when the maze resets
 function resetPlayer() {
@@ -39,7 +82,15 @@ function resetPlayer() {
     player.y = 0;
     player.pixelX = 0;
     player.pixelY = 0;
-    drawMaze();
+    lastDirection = "standingRight"; // Default to standingRight when reset
+    lastStandingDirection = "standingRight"; // Ensure standingRight is used
+    stepCounter = 0; // Reset animation counter
+    isMoving = false;
+    currentKey = null;
+    movementDisabled = false;
+    timerStarted = false; // Ensure the timer can start fresh
+    drawMaze(); // Redraw maze to clear any ghost images
+    drawPlayer(); // Ensure correct standing sprite
 }
 
 // Move player with smooth pixel-by-pixel movement
@@ -84,15 +135,6 @@ function smoothMove(targetX, targetY) {
         let dx = Math.sign(endPixelX - player.pixelX) * moveSpeed;
         let dy = Math.sign(endPixelY - player.pixelY) * moveSpeed;
 
-        // Ensure strict one-direction movement
-        if (dx !== 0 && dy !== 0) {
-            if (Math.abs(endPixelX - player.pixelX) > Math.abs(endPixelY - player.pixelY)) {
-                dy = 0; // Keep only horizontal movement
-            } else {
-                dx = 0; // Keep only vertical movement
-            }
-        }
-
         if (Math.abs(endPixelX - player.pixelX) <= moveSpeed) {
             player.pixelX = endPixelX;
             dx = 0;
@@ -107,50 +149,152 @@ function smoothMove(targetX, targetY) {
         drawMaze();
 
         if (player.pixelX !== endPixelX || player.pixelY !== endPixelY) {
-            requestAnimationFrame(animate); // Continue animation
+            requestAnimationFrame(animate);
         } else {
-            // Set player’s logical position in the grid
             player.x = targetX;
             player.y = targetY;
-            isMoving = false; // Unlock movement
-            drawMaze(); // Final draw to snap into position
+            isMoving = false;
+            drawMaze();
 
-            // **If another key is pressed, move immediately**
-            if (currentKey) movePlayer();
-
-            // **Check for win condition**
+            if (currentKey) 
+                movePlayer();
+            
+                
+            
             if (player.x === cols - 1 && player.y === rows - 1) {
+                disablePlayerMovement(); // Disable movement when player wins
+                stopTimer(); // Stop the timer
+                
                 swal("🎉 Finish!", "You have escaped the maze!", "success").then(() => {
-                    resetPlayer(); // Reset player position
-                    setup(); // Regenerate the maze (optional)
+                    resetGame();
                 });
             }
-
         }
     }
-
     animate();
 }
 
-// Draw the player on top of the maze
-function drawPlayer() {
-    ctx.drawImage(
-        playerImg,
-        player.pixelX + (cellSize - 20) / 2, // Center player image in the cell
-        player.pixelY + (cellSize - 20) / 2,
-        20, 20 // Resize to 20x20 pixels
-    );
-}
-
-// Modify drawMaze to always draw the player
-const originalDrawMaze = drawMaze;
-drawMaze = function () {
-    originalDrawMaze(); // Draw the maze first
-    drawPlayer(); // Then draw the player on top
+const images = {
+    standingRight: new Image(),
+    standingLeft: new Image(),
+    up1: new Image(),
+    up2: new Image(),
+    down1: new Image(),
+    down2: new Image(),
+    right1: new Image(),
+    right2: new Image(),
+    right3: new Image(),
+    left1: new Image(),
+    left2: new Image(),
+    left3: new Image()
 };
 
-// Ensure reset button resets player too
+images.standingRight.src = "assets/standingRight.png";
+images.standingLeft.src = "assets/standingLeft.png";
+images.up1.src = "assets/up.png";
+images.up2.src = "assets/up2.png";
+images.down1.src = "assets/down.png";
+images.down2.src = "assets/down2.png";
+images.right1.src = "assets/right1.png";
+images.right2.src = "assets/right2.png";
+images.right3.src = "assets/right3.png";
+images.left1.src = "assets/left1.png";
+images.left2.src = "assets/left2.png";
+images.left3.src = "assets/left3.png";
+
+
+let lastDirection = "standingRight"; // Track last movement direction
+let frameSwitch = false; // Toggle animation frame for up movement
+let frameCounter = 0; // Count frames to switch every 2 frames
+let stepCounter = 0; // Counter to track cell movement
+
+function drawPlayer() {
+    ctx.save();
+
+    if (lastDirection === "up") {
+        ctx.drawImage(stepCounter % 2 === 0 ? images.up1 : images.up2, player.pixelX, player.pixelY, cellSize, cellSize);
+    } else if (lastDirection === "down") {
+        ctx.drawImage(stepCounter % 2 === 0 ? images.down1 : images.down2, player.pixelX, player.pixelY, cellSize, cellSize);
+    } else if (lastDirection === "left") {
+        let leftIndex = stepCounter % 3 + 1;
+        ctx.drawImage(images[`left${leftIndex}`], player.pixelX, player.pixelY, cellSize, cellSize);
+    } else if (lastDirection === "right") {
+        let rightIndex = stepCounter % 3 + 1;
+        ctx.drawImage(images[`right${rightIndex}`], player.pixelX, player.pixelY, cellSize, cellSize);
+    } else {
+        // Default standing pose based on last direction
+        ctx.drawImage(lastStandingDirection === "standingLeft" ? images.standingLeft : images.standingRight, player.pixelX, player.pixelY, cellSize, cellSize);
+    }
+
+    ctx.restore();
+}
+
+function movePlayer() {
+    if (!currentKey || isMoving) return; // If no key is held or already moving, stop movement
+
+    let dx = 0, dy = 0;
+
+    if (currentKey === "ArrowRight") { dx = 1; dy = 0; }
+    else if (currentKey === "ArrowLeft") { dx = -1; dy = 0; }
+    else if (currentKey === "ArrowDown") { dx = 0; dy = 1; }
+    else if (currentKey === "ArrowUp") { dx = 0; dy = -1; }
+    else return; // Ignore other keys
+
+    let newX = player.x + dx;
+    let newY = player.y + dy;
+    let currentIndex = getIndex(player.x, player.y);
+    let newIndex = getIndex(newX, newY);
+
+    if (newIndex === -1) return; // Out of bounds
+
+    let currentCell = grid[currentIndex];
+
+    // **Check if movement is allowed (no walls in the way)**
+    if (dx === 1 && currentCell.walls.right) return; // Right wall
+    if (dx === -1 && currentCell.walls.left) return; // Left wall
+    if (dy === 1 && currentCell.walls.bottom) return; // Bottom wall
+    if (dy === -1 && currentCell.walls.top) return; // Top wall
+
+    // **Start the timer on the first movement**
+    if (!timerStarted) { 
+        startTimer(); 
+        timerStarted = true; // Ensure it only starts once
+    }
+
+    // Increment stepCounter for animation effect
+    stepCounter++;
+
+    // **Start smooth pixel-by-pixel movement**
+    smoothMove(newX, newY);
+}
+
+
+
+document.addEventListener("keydown", (e) => {
+    if (movementDisabled) return;
+       
+
+    if (["ArrowRight", "ArrowLeft", "ArrowUp", "ArrowDown"].includes(e.key)) {
+        lastDirection = e.key === "ArrowLeft" ? "left" 
+                     : e.key === "ArrowUp" ? "up" 
+                     : e.key === "ArrowDown" ? "down" 
+                     : "right";
+                     startTimer();
+                     enableHelpButton();
+    }
+
+    if (["ArrowRight", "ArrowLeft", "ArrowDown", "ArrowUp"].includes(e.key)) {
+        currentKey = e.key;
+        if (!isMoving) movePlayer();
+    }
+});
+const originalDrawMaze = drawMaze;
+drawMaze = function () {
+    originalDrawMaze();
+    drawPlayer();
+};
+
+// Reset button resets the timer and the maze
 document.querySelector(".resetButton").addEventListener("click", () => {
-    setup();
-    resetPlayer();
+    resetGame();
 });

@@ -1,34 +1,51 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="styles/styles.css">
+    <link rel="preload" href="assets/standingRight.png" as="image">
+    <link rel="preload" href="assets/standingLeft.png" as="image">
+    <link rel="preload" href="assets/up.png" as="image">
+    <link rel="preload" href="assets/up2.png" as="image">
+    <link rel="preload" href="assets/down.png" as="image">
+    <link rel="preload" href="assets/down2.png" as="image">
+    <link rel="preload" href="assets/right1.png" as="image">
+    <link rel="preload" href="assets/right2.png" as="image">
+    <link rel="preload" href="assets/right3.png" as="image">
+    <link rel="preload" href="assets/left1.png" as="image">
+    <link rel="preload" href="assets/left2.png" as="image">
+    <link rel="preload" href="assets/left3.png" as="image">
+
     <title>Maze</title>
 </head>
-<body>
-   
+
+<body onload="resetPlayer()">
+        <div class="imgDiv"></div>
     <div class="zunanji">
-        <div class="naslovDiv"></divclass> Solve the maze</div>
         <div class="topContainer">
             <div class="timer">
-                <div class="naslovZaTimer"> Timer:</div>
+                <div class="naslov"> Timer:</div>
                 <span id="TIMER">0:40:00</span>
             </div>
+            <span id="helpButton">Help</span>
         </div>
-     
+
         <div class="mazeDiv">
             <canvas id="canvas"></canvas>
-            <div class="buttons">
-                <div class="resetButton">
-                    <span>Reset</span>
-                </div>
+        </div>
+        <div class="buttons">
+            <div class="resetButton">
+                <span>Reset</span>
             </div>
         </div>
     </div>
     <script src="javascript/script.js"></script>
     <script src="javascript/movement.js"></script>
     <script src="javascript/timer.js"></script>
+    <script src="javascript/helpSolve.js"></script>
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 </body>
+
 </html>

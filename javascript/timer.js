@@ -1,8 +1,22 @@
 // Timer settings
-let timeLeft = 40 * 1000; // 40 seconds in milliseconds
+let cas=40;
+let timeLeft = cas * 1000; // 40 seconds in milliseconds
 let timerInterval;
 let timerStarted = false; // Tracks if the timer has started
 const timerDisplay = document.getElementById("TIMER");
+
+
+let validStartMoves = [];
+
+function findValidStartMoves() {
+    let startCell = grid[getIndex(0, 0)]; // Get the starting cell (0,0)
+    validStartMoves = [];
+
+    if (!startCell.walls.right) validStartMoves.push("ArrowRight");
+    if (!startCell.walls.left) validStartMoves.push("ArrowLeft");
+    if (!startCell.walls.bottom) validStartMoves.push("ArrowDown");
+    if (!startCell.walls.top) validStartMoves.push("ArrowUp");
+}
 
 // Function to format time as mm:ss:ms
 function formatTime(ms) {
@@ -41,28 +55,24 @@ function startTimer() {
 // Function to reset the timer
 function resetTimer() {
     cancelAnimationFrame(timerInterval); // Stop any running timer
-    timeLeft = 40 * 1000; // Reset to 40 seconds
+    timeLeft = cas * 1000; // Reset to 40 seconds
     timerStarted = false; // Allow timer to start again
     timerDisplay.textContent = formatTime(timeLeft); // Reset display
 }
 
-// Stop the game when time runs out
-function stopGame() {
-    resetTimer();
-    swal("⏳ Time's up!", "Try again!", "error").then(() => {
-        setup(); // Reset the maze/game
-    });
+// Function to stop the timer without resetting
+function stopTimer() {
+    cancelAnimationFrame(timerInterval); // Stop the animation frame
+    timerStarted = false; // Allow restart if needed
 }
 
-// Listen for movement (starts timer when player moves)
-document.addEventListener("keydown", (e) => {
-    if (!timerStarted && ["ArrowRight", "ArrowLeft", "ArrowDown", "ArrowUp"].includes(e.key)) {
-        startTimer(); // Start when first movement happens
-    }
-});
 
-// Reset button resets the timer and the maze
-document.querySelector(".resetButton").addEventListener("click", () => {
-    resetTimer(); // Reset the timer when clicking reset
-    setup(); // Reset the maze
-});
+// Stop the game when time runs out
+function stopGame() {
+    disablePlayerMovement();
+    swal("⏳ Time's up!", "Try again!", "error").then(() => {
+        resetTimer(); // Reset the timer after alert
+        setup(); // Reset the maze/game
+        resetPlayer();
+    });
+}

@@ -4,7 +4,7 @@ const ctx = canvas.getContext("2d");
 // Maze configuration
 const cols = 15; // Number of columns
 const rows = 15; // Number of rows
-const cellSize = 38;
+const cellSize = 50;
 canvas.width = cols * cellSize;
 canvas.height = rows * cellSize;
 
