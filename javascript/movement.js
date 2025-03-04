@@ -33,7 +33,10 @@ function resetGame() {
     resetTimer(); // Reset the timer
     resetPlayer(); // Reset player position
     setup(); // Regenerate the maze
-    disableHelpButton()
+    resetHelpTries();
+    defaultLightbulbs()
+    disableHelpButton();
+    hasPlayerMoved=false;
 }
 
 
@@ -159,13 +162,10 @@ function smoothMove(targetX, targetY) {
             if (currentKey) 
                 movePlayer();
             
-                
-            
             if (player.x === cols - 1 && player.y === rows - 1) {
                 disablePlayerMovement(); // Disable movement when player wins
-                stopTimer(); // Stop the timer
-                
-                swal("🎉 Finish!", "You have escaped the maze!", "success").then(() => {
+                stopTimer(); // Stop the timerrrr
+                swal("🎉 Finish!", "You have escaped the maze! \n Congratulations on completing this task \n hope you liked it!", "success").then(() => {
                     resetGame();
                 });
             }
@@ -173,6 +173,7 @@ function smoothMove(targetX, targetY) {
     }
     animate();
 }
+
 
 const images = {
     standingRight: new Image(),
@@ -270,6 +271,8 @@ function movePlayer() {
 
 
 
+
+
 document.addEventListener("keydown", (e) => {
     if (movementDisabled) return;
        
@@ -281,11 +284,14 @@ document.addEventListener("keydown", (e) => {
                      : "right";
                      startTimer();
                      enableHelpButton();
+                     
+                   
     }
 
     if (["ArrowRight", "ArrowLeft", "ArrowDown", "ArrowUp"].includes(e.key)) {
         currentKey = e.key;
-        if (!isMoving) movePlayer();
+        if (!isMoving) 
+            movePlayer();
     }
 });
 const originalDrawMaze = drawMaze;
@@ -298,3 +304,74 @@ drawMaze = function () {
 document.querySelector(".resetButton").addEventListener("click", () => {
     resetGame();
 });
+
+document.addEventListener("keydown", (event) => {
+    if (event.key.toLowerCase() === "r")
+        resetGame();
+});
+
+function teleportToFinish() {
+    let finishCell = grid[grid.length - 1]; // The finish cell
+    let possiblePositions = [];
+
+    // Check valid neighbors around the finish line
+    if (!finishCell.walls.left) possiblePositions.push({ x: finishCell.x - 1, y: finishCell.y });
+    if (!finishCell.walls.right) possiblePositions.push({ x: finishCell.x + 1, y: finishCell.y });
+    if (!finishCell.walls.top) possiblePositions.push({ x: finishCell.x, y: finishCell.y - 1 });
+    if (!finishCell.walls.bottom) possiblePositions.push({ x: finishCell.x, y: finishCell.y + 1 });
+
+    if (possiblePositions.length > 0) {
+        let { x, y } = possiblePositions[0]; // Pick the first valid position
+
+        // Teleport player
+        player.x = x;
+        player.y = y;
+        player.pixelX = x * cellSize;
+        player.pixelY = y * cellSize;
+
+        drawMaze(); // Redraw everything to update player position
+    }
+}
+
+
+function findShortestPath() {
+    let start = grid[getIndex(player.x, player.y)]; // Start position
+    let end = grid[grid.length - 1]; // End position
+    let queue = [[start]]; // BFS queue
+    let visited = new Set(); // Track visited cells
+
+    visited.add(start);
+
+    while (queue.length > 0) {
+        let path = queue.shift(); // Get first path in queue
+        let current = path[path.length - 1]; // Last cell in the path
+
+        if (current === end) {
+            return path; // Return shortest path found
+        }
+
+        for (let dir of directions) {
+            let nx = current.x + dir.x;
+            let ny = current.y + dir.y;
+            let index = getIndex(nx, ny);
+
+            if (index !== -1) {
+                let nextCell = grid[index];
+
+                // Ensure movement is valid (no walls blocking the way)
+                let canMove =
+                    (dir.x === 1 && !current.walls.right) ||  // Move Right
+                    (dir.x === -1 && !current.walls.left) ||  // Move Left
+                    (dir.y === 1 && !current.walls.bottom) || // Move Down
+                    (dir.y === -1 && !current.walls.top);     // Move Up
+
+                if (canMove && !visited.has(nextCell)) {
+                    visited.add(nextCell);
+                    queue.push([...path, nextCell]); // Add new path to queue
+                }
+            }
+        }
+    }
+
+    return []; // No valid path found
+}

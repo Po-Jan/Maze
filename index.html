@@ -22,29 +22,58 @@
 </head>
 
 <body onload="resetPlayer()">
-        <div class="imgDiv"></div>
+    <div class="imgDiv"></div>
     <div class="zunanji">
+
         <div class="topContainer">
-            <div class="timer">
-                <div class="naslov"> Timer:</div>
-                <span id="TIMER">0:40:00</span>
-            </div>
-            <span id="helpButton">Help</span>
+            <img src="assets/braidMaze.png">
+
+            
         </div>
 
-        <div class="mazeDiv">
-            <canvas id="canvas"></canvas>
-        </div>
-        <div class="buttons">
-            <div class="resetButton">
-                <span>Reset</span>
+
+        <div class="mazeXbuttons">
+            <div class="mazeDiv">
+                <canvas id="canvas"></canvas>
+            </div>
+
+            <div class="buttons">
+                <div class="timer">
+                    <div class="naslov"> Timer:</div>
+                    <span id="TIMER">0:40:00</span>
+                </div>
+    
+                <div class="helpContainer">
+    
+                    <span id="helpButton" class="opacity07">Help</span>
+    
+                    <div class="lightbulbs">
+                        <span id="lightbulb1"></span>
+                        <span id="lightbulb2">
+                            <div class="pixel"></div>
+                        </span>
+                        <span id="lightbulb3"></span>
+                    </div>
+                </div>
+
+                <div class="resetButton">
+                    <span>Reset</span>
+                </div>
+                <div class="solveButton" onclick="teleportToFinish()">
+                    <span>Solve</span>
+                </div>
+
             </div>
         </div>
+
+
+
     </div>
     <script src="javascript/script.js"></script>
     <script src="javascript/movement.js"></script>
     <script src="javascript/timer.js"></script>
     <script src="javascript/helpSolve.js"></script>
+    <script src="javascript/vizitka.js"></script>
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 </body>
 

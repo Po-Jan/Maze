@@ -2,9 +2,9 @@ const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 
 // Maze configuration
-const cols = 15; // Number of columns
-const rows = 15; // Number of rows
-const cellSize = 50;
+const cols = 16; // Number of columns
+const rows = 16; // Number of rows
+const cellSize = 45;
 canvas.width = cols * cellSize;
 canvas.height = rows * cellSize;
 

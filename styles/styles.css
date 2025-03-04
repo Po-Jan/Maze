@@ -6,7 +6,7 @@
 
 html, body {
     height: 100%;
-    width: 100%;
+    min-width: 100%;
     overflow: hidden;
     display: flex;
     justify-content: center;
@@ -14,6 +14,51 @@ html, body {
 
 }
 
+
+/******************************************/
+.swal-button {
+    background-color:#f5d1b4;
+    outline-style:none;
+    border:none;
+    color: black;
+    opacity: 1;
+    transition: opacity 0.2s;
+    margin-top: -8px;
+}
+
+.swal-text {
+    color: black;
+    font-size: 21px;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    
+}
+
+.swal-title{
+    font-size: 30px;
+    color: black;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    line-height: 1.25;
+    margin-bottom: 8px;
+    font-weight: 900;
+    font-style: normal;
+}
+
+.swal-modal {
+    background-color:#faf2e6;
+    color: black;
+    height: 380px;
+    width: 480px;
+    position: relative;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
+.swal-icon--success::before,.swal-icon--success::after,.swal-icon--success__hide-corners{
+    opacity: 0 !important;
+}
+
+
+
+/**************************************/
 .imgDiv{
     background: url("../assets/backgroundBraid.jpg") no-repeat center center fixed;
     opacity: 0.3;
@@ -24,49 +69,109 @@ html, body {
 }
 .zunanji{
     height: 100%;
-    width: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
 }
+
+.topContainer{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    user-select: none;
+    margin-bottom: 20px;
+}
+.mazeXbuttons{
+    display: flex;
+}
 .mazeDiv{
     display: flex;
+    width: 720px;
     justify-content: center;
     align-items: center;
-    border: 2px solid black;
+    border: 5px solid black;
 }
-canvas{
-    opacity: 0.85;
-}
+
 .buttons{
-    width:750px;
-    height: 50px;
-    margin-top: 5px;
+    height: 724px;
+    display: flex;
+    justify-content: space-around;
+    flex-direction: column;
+    margin-left: 10px;
+    user-select: none;
 }
-.resetButton,#helpButton{
+.resetButton,#helpButton,.solveButton{
     height: 50px;
     width: 200px;
-    color: rgb(160, 110, 49);
+    color: rgb(156, 126, 89);
     font-size: 25px;
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: blanchedalmond;
+    background-color: rgb(255, 242, 223);
     border-radius: 20px;
     border: 2px solid gray;
     cursor: pointer;
     user-select: none;
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    opacity: 1;
+    margin-bottom: 2px;
 }
-.topContainer{
-    width: 754px;
+
+.opacity07{
+    opacity: 0.7;
+}
+
+.helpContainer{
+     display: flex;
+     flex-direction: column-reverse;
+}
+.lightbulbs{
     display: flex;
+    justify-content: space-around;
     align-items: center;
+}
+.lightbulbs span{
+    height: 41px;
+    width: 32px;
+    background: url(../assets/lightbulb.png) no-repeat center;
 }
 .timer{
     width: 200px;
-    height: 100px;
+    height: 180px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    user-select: none;
+    background-color: rgb(255, 242, 223);
+    border-radius: 30px;
+    color: rgb(156, 126, 89);
+    border: 2px solid gray;
+}
+.naslov{
+    width: 100%;
+    font-size: 40px;
+    text-align: center;
+    margin-bottom: 10px;
+}
+#TIMER{
+    width: 100%;
+    font-size: 40px;
+    text-align: center;
+}
+
+.displayNone{
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+
+.bestTime{
+    width: 200px;
+    height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -74,14 +179,23 @@ canvas{
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     user-select: none;
 }
-.naslov{
+#bTime{
     width: 100%;
     font-size: 25px;
     text-align: center;
     margin-bottom: 10px;
 }
-#TIMER{
-    width: 100%;
-    font-size: 25px;
-    text-align: center;
+
+#lightBulb2{
+    position: relative;
+
+}
+.pixel{
+    position: absolute;
+    height: 7px;
+    width: 7px;
+    background-color: none;
+    margin-top: 33px;
+    margin-left:13px;
+
 }
