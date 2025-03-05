@@ -88,7 +88,7 @@ function defaultLightbulbs(){
 }
 
 function helpButtonFunction() {
-    if (helpButton.disabled == false && helptries > 0 && timeLeft > 4000) {
+    if (helpButton.disabled == false && helptries > 0 && timeLeft > 5000) {
         solveMaze();
         reduceTime();
         helptries--;

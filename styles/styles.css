@@ -65,11 +65,12 @@ html, body {
 
 /**************************************/
 .imgDiv{
-    background: url("../assets/backgroundBraid.jpg") no-repeat center center fixed;
+    background: url("../assets/backgroundBraid.jpg") no-repeat center center;
     opacity: 0.3;
     height: 100%;
     width: 100%;
     z-index: -22;
+    background-size: cover;
     position: fixed;
 }
 .zunanji{
@@ -90,6 +91,7 @@ html, body {
 }
 .mazeXbuttons{
     display: flex;
+
 }
 .mazeDiv{
     display: flex;
@@ -107,7 +109,7 @@ html, body {
     margin-left: 10px;
     user-select: none;
 }
-.resetButton,#helpButton,.solveButton{
+.resetButton,#helpButton,.solveButton,.rules{
     height: 50px;
     width: 200px;
     color: rgb(156, 126, 89);
