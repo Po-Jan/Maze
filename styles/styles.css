@@ -43,13 +43,18 @@ html, body {
     font-style: normal;
 }
 
-.swal-modal {
+.swal-modal{
     background-color:#faf2e6;
     color: black;
     height: 380px;
     width: 480px;
     position: relative;
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
+.swalEdit{
+    height: 310px;
+    width: 400px;
 }
 
 .swal-icon--success::before,.swal-icon--success::after,.swal-icon--success__hide-corners{

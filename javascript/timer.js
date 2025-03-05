@@ -78,10 +78,11 @@ function resetTimer() {
     timerDisplay.textContent = formatTime(timeLeft);
 }
 
+
 // Stop the game when time runs out
 function stopGame() {
     disablePlayerMovement();
-    swal("⏳ Time's up!", "Try again!", "error").then(() => {
+    swal("⏳ Time's up dude!\n   ", "Try again!\n Better luck next time\n buddy.", "error").then(() => {
         resetGame();
     });
 }
