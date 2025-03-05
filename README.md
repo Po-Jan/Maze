@@ -7,7 +7,7 @@ A fun and interactive maze game built using HTML, CSS, and JavaScript. Navigate 
 - Timer to track completion time
 - Reset functionality to restart the game
 - Automatic game stop when reaching the finish line
-- (Upcoming) Path illumination to help visualize the correct route
+- Path illumination to help visualize the correct route
 
 ## Project Structure
 ```
@@ -23,10 +23,5 @@ maze-game/
 1. Open `index.html` in a browser.
 2. Use the arrow keys to navigate the maze.
 3. Reach the finish line to stop the timer and win.
-4. Press the reset button to restart the game.
-
-## Future Improvements
-- **Enhanced visuals**: Better UI, animations, and themes
-- **Dynamic mazes**: Randomly generated maze levels
-- **Mobile support**: Touch-friendly controls
-- **Sound effects**: Background music and movement sounds
+4. Press the reset button (r) to restart the game.
+5. If needed press (h) for help.
