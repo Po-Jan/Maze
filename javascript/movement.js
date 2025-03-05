@@ -16,7 +16,7 @@ playerImg.onload = () => {
 // Movement settings
 let currentKey = null; // Tracks the current active key
 let isMoving = false;
-const moveSpeed = 2; // Pixels per frame
+const moveSpeed = 4; // Pixels per frame
 let movementDisabled = false; // Flag to disable player movement
 
 // Disable player movement
