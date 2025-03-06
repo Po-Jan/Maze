@@ -1,4 +1,4 @@
- Maze Game
+# Maze Game
 
 A fun and interactive maze game built using HTML, CSS, and JavaScript. Navigate through the maze, avoid obstacles, and reach the finish line before time runs out!
 
