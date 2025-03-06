@@ -23,9 +23,8 @@ function drawSolutionPath(path, fadeIn = true) {
         ctx.save(); // Save current state (to avoid affecting the maze)
         ctx.globalAlpha = opacity; // Apply opacity to only the solution path
 
-        ctx.strokeStyle = "rgba(135, 206, 250, 1)"; // Sky Blue (full color, opacity controlled by globalAlpha)
-        ctx.lineWidth = cellSize-25;
-        ctx.lineCap = "round";
+        ctx.strokeStyle = "rgb(204, 180, 145)"; // Sky Blue (full color, opacity controlled by globalAlpha)
+        ctx.lineWidth = 4;
 
         ctx.beginPath();
         ctx.moveTo(path[0].x * cellSize + cellSize / 2, path[0].y * cellSize + cellSize / 2);
