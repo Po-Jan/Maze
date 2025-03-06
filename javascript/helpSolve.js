@@ -27,7 +27,7 @@ function drawSolutionPath(path, fadeIn = true) {
         ctx.lineWidth = 4;
 
         ctx.beginPath();
-        ctx.moveTo(path[0].x * cellSize + cellSize / 2, path[0].y * cellSize + cellSize / 2);
+        ctx.moveTo(path[1].x * cellSize + cellSize / 2, path[1].y * cellSize + cellSize / 2);
 
         for (let i = 1; i < path.length - 1; i++) {
             let cell = path[i];
