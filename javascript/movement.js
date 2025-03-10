@@ -165,9 +165,27 @@ function smoothMove(targetX, targetY) {
             if (player.x === cols - 1 && player.y === rows - 1) {
                 disablePlayerMovement(); // Disable movement when player wins
                 stopTimer(); // Stop the timerrrr
-                swal("🎉 Finish!", "You have escaped the maze! \n Congratulations on completing this task \n hope you liked it!", "success").then(() => {
-                    resetGame();
+                swal({
+                    title: "🎉 Finish!",
+                    text: "You have escaped the maze!\nCongratulations on completing the maze.",
+                    icon: "success",
+                    buttons: {
+                        confirm: {
+                            text: "Play Again",
+                            className: "swal-button"
+                        }
+                    }
+                }).then(() => {
+                    resetGame(); // Restart the game when the user clicks the button
                 });
+            
+                // Add the class "swFinish" to the modal after it's created
+                setTimeout(() => {
+                    let swalModal = document.querySelector(".swal-modal");
+                    if (swalModal) {
+                        swalModal.classList.add("swFinish");
+                    }
+                }, 100);
             }
         }
     }

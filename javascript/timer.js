@@ -82,7 +82,25 @@ function resetTimer() {
 // Stop the game when time runs out
 function stopGame() {
     disablePlayerMovement();
-    swal("⏳ Time's up dude!\n   ", "Try again!\n Better luck next time\n buddy.", "error").then(() => {
-        resetGame();
-    });
+        swal({
+            title: "⏳ Time's up dude!",
+            text: "Try again!\nBetter luck next time, buddy.",
+            icon: "error",
+            buttons: {
+                confirm: {
+                    text: "Retry",
+                    className: "swal-button" // This works only for the button
+                }
+            }
+        }).then(() => {
+            resetGame(); // Restart the game after the alert is closed
+        });
+    
+        // Wait for the modal to be created and then add the class
+        setTimeout(() => {
+            let swalModal = document.querySelector(".swal-modal");
+            if (swalModal) {
+                swalModal.classList.add("swTimeout"); // Apply class to the modal
+            }
+        }, 100);
 }
